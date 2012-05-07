@@ -1,0 +1,60 @@
+<div class='user-info'>
+	Hello: <a href='#' title='user id {<?php echo $this->userId ?>} @ <?php echo $this->orgCode?>'><?php echo $this->loginName?></a>
+</div>
+<hr />
+<nav class='group-container'>
+	<div class='group-head'>File Groups</div>
+	<ul class='default-group'>
+		<li><a class='system' href='#/rest/file/groupId/system@page/1'>系统文件</a></li>
+		<li><a class='ungroup' href='#/rest/file/groupId/ungrouped@page/1'>未分类文件</a></li>
+	</ul>
+	<ul class='group-list'>
+		<li class='add-group'>
+			<div class='add-group'>添加新分组-回车确认输入</div>
+			<input id='label-create' type='text' name='label-create' value='' />
+		</li>
+	</ul>
+</nav>
+<div class='file-container'>
+	<div class='file-list'>
+		<ul class='file-list'></ul>
+	</div>
+	
+	<div class='paginator'>
+		<ul class='paginator'></ul>
+	</div>
+	
+	<div class='upload-toolbar'>
+		<div id='upload-button' groupId='ungrouped'></div>
+	</div>
+</div>
+<div class='clear'></div>
+
+<script type='text/template' id='group-template'>
+<div class='load-group'>
+	<div class='text-label clickable'>{{ label }}</div>
+	<div class='edit-label' style='display: none;'><input class='input-label' name='edit-label' value='{{ label }}' /></div>
+	<div class='text-count'>文件数量 {{ fileCount }}</div>
+</div>
+<div class='actions'>
+	<a class='edit mini-icon-bg mini-icon-edit' href='#'></a>
+	<a class='destroy mini-icon-bg mini-icon-delete' href='#'></a>
+</div>
+</script>
+<script type='text/template' id='file-template'>
+<% if(isImage == true) { %>
+	<img class='clickable' src='http://st.enorange.com/public-misc/<?php echo $this->miscFolder?>/_thumb/{{ urlname }}' />
+<% } else { %>
+	<div class='file-type-general'></div>
+<% } %>
+	<br />
+	<div class='info'>
+		<div class='label'>{{ filename }}</div>
+		<div class='upload'>上传时间:{{ uploadTime }}</div>
+		<div class='size'>大小:{{ Math.ceil(size / 1024) }} KB</div>
+		<div class='actions'>
+			<a class='remove' href='#'>删除</a>
+			<span class='open clickable'><a href='http://st.enorange.com/public-misc/<?php echo $this->miscFolder?>/{{ urlname }}' target='_blank'>打开</a></span>
+		</div>
+	</div>
+</script>

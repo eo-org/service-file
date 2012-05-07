@@ -1,0 +1,29 @@
+<?php
+$csu = Class_Session_User::getInstance();
+?>
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<link type="text/css" href="<?=Class_Server::extUrl()?>/reset-backend.css" media="screen" rel="stylesheet">
+	<link type="text/css" href="<?=Class_Server::libUrl()?>/style/template.css" media="screen" rel="stylesheet">
+	
+	<script type="text/javascript"	src="<?=Class_Server::extUrl()?>/jub.js"></script>
+	<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/app/fileupload.js"></script>
+	
+	<script type="text/javascript">
+		window.ORG_CODE = "<?php echo $csu->getUserData('orgCode') ?>";
+	</script>
+	
+	<title><?=$this->pageTitle ?></title>
+</head>
+
+<body>
+	<div class='body_main_frame'>
+		<?php echo $this->layout()->content ?>
+	</div>
+	<div id='whitebox'></div>
+	<div id='blackbox'></div>
+	<script data-main="<?=Class_Server::libUrl()?>/script/app/main" src="<?=Class_Server::libUrl()?>/script/app/require-jquery.js"></script>
+</body>
+</html>
