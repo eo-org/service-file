@@ -14,7 +14,7 @@ define("APP_ENV", getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'produ
 define("LOCAL_CHARSET", getenv('LOCAL_CHARSET') ? getenv('LOCAL_CHARSET') : 'UTF-8');
 
 require_once $sfLibPath.'/Class/Server.php';
-Class_Server::config('localhost');
+Class_Server::config(APP_ENV);
 
 require_once $libPath."/Zend/Application.php";
 $application = new Zend_Application(APP_ENV, APP_PATH.'/configs/application.ini');
