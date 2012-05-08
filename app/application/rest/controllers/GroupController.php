@@ -9,6 +9,8 @@ class Rest_GroupController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
+		$orgCode = $this->getRequest()->getParam('orgCode');
+		
 		$pageSize = 20;
 		$currentPage = 1;
 		
@@ -16,7 +18,6 @@ class Rest_GroupController extends Zend_Rest_Controller
 		$co->setFields(array('label', 'fileCount'));
 		
 		$csu = Class_Session_User::getInstance();
-		$orgCode = $csu->getOrgCode();
 		$co->addFilter('orgCode', $orgCode);
 		
 		$queryArray = array();

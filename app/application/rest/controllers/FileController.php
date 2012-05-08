@@ -3,6 +3,7 @@ class Rest_FileController extends Zend_Rest_Controller
 {
 	protected $_bucket;
 	protected $_folder;
+	protected $_orgCode;
 	protected $_userOrigName = false;
 	
 	public function init()
@@ -10,7 +11,8 @@ class Rest_FileController extends Zend_Rest_Controller
 		$csu = Class_Session_User::getInstance();
 		
 		$this->_bucket = 'public-misc';
-		$this->_folder = $csu->getOrgCode();
+		$this->_orgCode = Class_Server::getOrgCode();
+		$this->_folder = Class_Server::getOrgCode();
 		
         $this->_helper->viewRenderer->setNoRender(true);
         $this->_helper->layout()->disableLayout();
@@ -46,7 +48,7 @@ class Rest_FileController extends Zend_Rest_Controller
         }
         
         $csu = Class_Session_User::getInstance();
-		$co->addFilter('orgCode', $csu->getOrgCode())->setPage($currentPage)->setPageSize($pageSize)
+		$co->addFilter('orgCode', $this->_orgCode)->setPage($currentPage)->setPageSize($pageSize)
 			->sort('_id', -1);
 		$data = $co->fetchAll(true);
 		$dataSize = $co->count();
@@ -116,7 +118,7 @@ class Rest_FileController extends Zend_Rest_Controller
 			if($useOrigName) {
 				$fileDoc = App_Factory::_m('File')->addFilter('urlname', $filename)
 					->addFilter('groupId', 'system')
-					->addFilter('orgCode', $csu->getOrgCode())
+					->addFilter('orgCode', $this->_orgCode)
 					->fetchOne();
 				if(!is_null($fileDoc)) {
 					$createNewDoc = false;
@@ -125,7 +127,7 @@ class Rest_FileController extends Zend_Rest_Controller
 			
 			if($createNewDoc) {
 				$fileDoc = App_Factory::_m('File')->create(array(
-					'orgCode' => $csu->getOrgCode(),
+					'orgCode' => $this->_orgCode,
 					'userId' => $csu->getUserId(),
 					'groupId' => $groupId,
 					'filename' => $filename,
@@ -167,7 +169,7 @@ class Rest_FileController extends Zend_Rest_Controller
 		$fileId = $this->getRequest()->getParam('id');
 		$fileDoc = App_Factory::_m('File')->find($fileId);
 		
-		if($fileDoc != null && $fileDoc->orgCode == $csu->getOrgCode()) {
+		if($fileDoc != null && $fileDoc->orgCode == $this->_orgCode) {
 			$objectUrl = $fileDoc->urlname;
 			$groupId = $fileDoc->groupId;
 			
@@ -184,7 +186,7 @@ class Rest_FileController extends Zend_Rest_Controller
 			}
 			$this->getResponse()->setHeader('result', 'sucess');
 		} else {
-			$this->getResponse()->setBody($fileDoc->orgCode.' != '.$csu->getOrgCode());
+			$this->getResponse()->setBody($fileDoc->orgCode.' != '.$this->_orgCode);
 			$this->getResponse()->setHeader('result', 'fail');
 		}
 	}

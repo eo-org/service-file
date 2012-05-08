@@ -43,7 +43,7 @@
 </script>
 <script type='text/template' id='file-template'>
 <% if(isImage == true) { %>
-	<img class='clickable' src='http://st.enorange.com/public-misc/<?php echo $this->miscFolder?>/_thumb/{{ urlname }}' />
+	<img class='clickable' src='http://storage.aliyun.com/public-misc/<?php echo $this->miscFolder?>/_thumb/{{ urlname }}' />
 <% } else { %>
 	<div class='file-type-general'></div>
 <% } %>
@@ -54,7 +54,7 @@
 		<div class='size'>大小:{{ Math.ceil(size / 1024) }} KB</div>
 		<div class='actions'>
 			<a class='remove' href='#'>删除</a>
-			<span class='open clickable'><a href='http://st.enorange.com/public-misc/<?php echo $this->miscFolder?>/{{ urlname }}' target='_blank'>打开</a></span>
+			<span class='open clickable'><a href='http://storage.aliyun.com/public-misc/<?php echo $this->miscFolder?>/{{ urlname }}' target='_blank'>打开</a></span>
 		</div>
 	</div>
 </script>
