@@ -61,7 +61,7 @@ class Rest_GroupController extends Zend_Rest_Controller
 		
 		$csu = Class_Session_User::getInstance();
 		$groupDoc->userId = $csu->getUserId();
-		$groupDoc->orgCode = $csu->getOrgCode();
+		$groupDoc->orgCode = Class_Server::getOrgCode();
 		
 		$groupDoc->save();
 		$this->getResponse()->setHeader('result', 'sucess');
