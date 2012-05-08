@@ -110,6 +110,7 @@ class Rest_FileController extends Zend_Rest_Controller
 					->writeImage($thumbname, 60);
 				$thumbContent = file_get_contents($thumbname);
 				$thumbResult = $service->createObject($this->_bucket, $this->_folder.'/_thumb/'.$urlname, $thumbContent);
+				unlink($thumbname);
 			}
 			$result = $service->createObject($this->_bucket, $this->_folder.'/'.$urlname, $fileContent, $size);
 			
