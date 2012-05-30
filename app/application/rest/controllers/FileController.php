@@ -161,6 +161,7 @@ class Rest_FileController extends Zend_Rest_Controller
 	
 	public function putAction()
 	{
+
 		$modelString = $this->getRequest()->getParam('model');
 		$jsonArry = Zend_Json::decode($modelString);
 		
@@ -175,7 +176,6 @@ class Rest_FileController extends Zend_Rest_Controller
 	public function deleteAction()
 	{
 		$csu = Class_Session_User::getInstance();
-		var_export($this->getRequest()->getParams());exit;
 		$fileId = $this->getRequest()->getParam('id');
 		$fileDoc = App_Factory::_m('File')->find($fileId);
 		
