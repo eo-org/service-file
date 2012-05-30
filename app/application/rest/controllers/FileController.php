@@ -22,7 +22,7 @@ class Rest_FileController extends Zend_Rest_Controller
 	{
 		$pageSize = 8;
 		$currentPage = 1;
-		
+		//file_put_contents("D://b.txt",12456,FILE_APPEND);
 		$co = new Class_Mongo_File_Co();
 		$co->setFields(array('filename', 'size', 'isImage', 'uploadTime', 'urlname'));
 		$queryArray = array();
@@ -160,12 +160,21 @@ class Rest_FileController extends Zend_Rest_Controller
 	
 	public function putAction()
 	{
+		$modelString = $this->getRequest()->getParam('model');
+		$jsonArry = Zend_Json::decode($modelString);
 		
+		$groupDoc = App_Factory::_m('File')->find($jsonArry['id']);
+		$groupDoc->setFromArray($jsonArry);
+		$groupDoc->save();
+		
+		$this->getResponse()->setHeader('result', 'sucess');
+		$this->_helper->json(array('id' => $groupDoc->getId()));
 	}
 	
 	public function deleteAction()
 	{
 		$csu = Class_Session_User::getInstance();
+		var_export($this->getRequest()->getParams());exit;
 		$fileId = $this->getRequest()->getParam('id');
 		$fileDoc = App_Factory::_m('File')->find($fileId);
 		

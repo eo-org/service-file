@@ -10,8 +10,9 @@
 	</ul>
 	<ul class='group-list'>
 		<li class='add-group'>
-			<div class='add-group'>添加新分组-回车确认输入</div>
+			<div class='add-group'>添加新分组</div>
 			<input id='label-create' type='text' name='label-create' value='' />
+			<input id='label-affirm' type='button' value='确认'>
 		</li>
 	</ul>
 </nav>
@@ -49,12 +50,14 @@
 <% } %>
 	<br />
 	<div class='info'>
-		<div class='label'>{{ filename }}</div>
+		<div class='label text-amend'>{{ filename }}</div>
+		<div class='amend-label' style='display: none;'><input class='inputamend-label' name='amend-label' value='{{ filename }}' /></div>
 		<div class='upload'>上传时间:{{ uploadTime }}</div>
 		<div class='size'>大小:{{ Math.ceil(size / 1024) }} KB</div>
 		<div class='actions'>
-			<a class='remove' href='#'>删除</a>
 			<span class='open clickable'><a href='http://storage.aliyun.com/public-misc/<?php echo $this->miscFolder?>/{{ urlname }}' target='_blank'>打开</a></span>
+			<a class='amend' href='javascript:void(0);'>修改</a>
+			<a class='remove' href='#'>删除</a>
 		</div>
 	</div>
 </script>

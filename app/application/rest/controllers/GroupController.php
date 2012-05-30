@@ -50,7 +50,6 @@ class Rest_GroupController extends Zend_Rest_Controller
 	
 	public function getAction()
 	{
-		
 	}
 	
 	public function postAction()
@@ -83,7 +82,9 @@ class Rest_GroupController extends Zend_Rest_Controller
 	
 	public function deleteAction()
 	{
-		$id = $this->getRequest()->getParam('id');
+		
+		$id = $this->getRequest()->getParam('orgCode');
+		
 		$groupDoc = App_Factory::_m('Group')->find($id);
 		
 		$this->getResponse()->setHeader('result', 'fail');
