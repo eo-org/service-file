@@ -82,25 +82,20 @@ class Rest_GroupController extends Zend_Rest_Controller
 	
 	public function deleteAction()
 	{
-		
-		$id = $this->getRequest()->getParam('orgCode');
+		$id = $this->getRequest()->getParam('id');
 		
 		$groupDoc = App_Factory::_m('Group')->find($id);
 		
 		$this->getResponse()->setHeader('result', 'fail');
 		if(!is_null($groupDoc)) {
-			$csu = Class_Session_User::getInstance();
-			$userId = $csu->getUserId();
-			if($groupDoc->userId == $userId) {
-				$fileCollection = App_Factory::_m('File');
-				$fileCollection->update(
-					array('groupId' => $id),
-					array('$set' => array('groupId' => 'ungrouped')),
-					array('multiple' => true)
-				);
-				$groupDoc->delete();
-				$this->getResponse()->setHeader('result', 'sucess');
-			}
+			$fileCollection = App_Factory::_m('File');
+			$fileCollection->update(
+				array('groupId' => $id),
+				array('$set' => array('groupId' => 'ungrouped')),
+				array('multiple' => true)
+			);
+			$groupDoc->delete();
+			$this->getResponse()->setHeader('result', 'sucess');
 		}
 	}
 }
