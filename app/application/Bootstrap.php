@@ -47,11 +47,36 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 		$controller = Zend_Controller_Front::getInstance();
 		$router = $controller->getRouter();
-        $router->addRoute('presetOrgCode', new Zend_Controller_Router_Route(
-			'admin/:orgCode',
-			array('module' => 'admin', 'controller' => 'index', 'action' => 'index')
-		));
-        $router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
+		
+		$defaultRoute = new Zend_Controller_Router_Route(
+			':orgCode/:module/:controller/:action/*',
+			array(
+				'orgCode'    => 'demo',
+				'module'     => 'default',
+				'controller' => 'index',
+				'action'     => 'index'
+			),
+			array('account' => '([a-z0-9]+)')
+		);
+		$router->addRoute('default', $defaultRoute);
+		$router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
+//		$accountRoute = new Zend_Controller_Router_Route(
+//             ':account',
+//             array('account' => 'demo'),
+//             array('account' => '([a-z0-9]+)')
+//         );
+//         $router->addRoute('default', $accountRoute->chain($defaultRoute)); 
+//		
+//		
+		
+		
+		
+		
+		
+//        $router->addRoute('presetOrgCode', new Zend_Controller_Router_Route(
+//			'admin/:orgCode',
+//			array('module' => 'admin', 'controller' => 'index', 'action' => 'index')
+//		));
         unset($router);
 	}
 }
