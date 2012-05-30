@@ -9,7 +9,7 @@ class Rest_GroupController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
-		$orgCode = $this->getRequest()->getParam('orgCode');
+		$orgCode = Class_Server::getOrgCode();
 		
 		$pageSize = 20;
 		$currentPage = 1;
