@@ -15,7 +15,7 @@ class Rest_GroupController extends Zend_Rest_Controller
 		$currentPage = 1;
 		
 		$co = new Class_Mongo_Group_Co();
-		$co->setFields(array('label', 'fileCount'));
+		$co->setFields(array('label', 'fileCount', 'orgCode'));
 		
 		$csu = Class_Session_User::getInstance();
 		$co->addFilter('orgCode', $orgCode);

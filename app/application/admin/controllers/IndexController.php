@@ -12,5 +12,11 @@ class Admin_IndexController extends Zend_Controller_Action
 		$this->view->loginName = $csu->getUserData('loginName');
 		
 		$this->getResponse()->setHeader('Access-Control-Allow-Origin', '*');
+		
+		$storageCo = App_Factory::_m('Storage');
+// 		$this->view->usedCapacity = $storageCo->index($csu->getUserData('orgCode'));
+		$this->view->usedCapacity = $storageCo->index($miscFolder);
 	}
+	
+	
 }
