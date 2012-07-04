@@ -232,7 +232,7 @@ class Rest_FileController extends Zend_Rest_Controller
 		}
 	}
 	
-	public function statisticsAction()
+	public function recalculateAction()
 	{
 		$fileCo = App_Factory::_m('File');
 		$fileDoc = $fileCo->addFilter('orgCode',$this->_orgCode)->fetchDoc();
