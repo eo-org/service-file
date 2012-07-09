@@ -22,7 +22,6 @@ class Rest_FileController extends Zend_Rest_Controller
 	{
 		$pageSize = 8;
 		$currentPage = 1;
-		//file_put_contents("D://b.txt",12456,FILE_APPEND);
 		$co = new Class_Mongo_File_Co();
 		$co->setFields(array('filename', 'size', 'isImage', 'uploadTime', 'urlname', 'groupId', 'orgCode'));
 		$queryArray = array();
@@ -72,7 +71,8 @@ class Rest_FileController extends Zend_Rest_Controller
 		
 		if($this->getRequest()->isPost()) {
 			$storageCo = App_Factory::_m('Storage');
-			if($storageCo->checkCapacity($this->_orgCode)){
+			$storageDoc = $storageCo->addFilter('orgCode',Class_Server::getOrgCode())->fetchOne();
+			if($storageDoc->checkCapacity()){
 				$groupId = $this->getRequest()->getParam('groupId');
 				$useOrigName = false;
 				if($groupId == 'system') {
@@ -147,7 +147,7 @@ class Rest_FileController extends Zend_Rest_Controller
 					));
 					$fileDoc->save();
 					
-					$storageCo->editCapacity($this->_orgCode,$isFileType,$size,$operating = 'create');
+					$storageDoc->addFile($fileDoc);
 					
 					if($groupId != 'system' && $groupId != 'ungrouped') {
 						$groupDoc = App_Factory::_m('Group')->find($groupId);
@@ -216,7 +216,8 @@ class Rest_FileController extends Zend_Rest_Controller
 			}
 			
 			$storageCo = App_Factory::_m('Storage');
-			$storageCo->editCapacity($this->_orgCode,$fileDoc->isImage,$fileDoc->size,$operating = 'delete');
+			$storageDoc = $storageCo->addFilter('orgCode',Class_Server::getOrgCode())->fetchOne();
+			$storageDoc->removeFile($fileDoc);
 			
 			$fileDoc->delete();
 			
@@ -236,23 +237,14 @@ class Rest_FileController extends Zend_Rest_Controller
 	{
 		$fileCo = App_Factory::_m('File');
 		$fileDoc = $fileCo->addFilter('orgCode',$this->_orgCode)->fetchDoc();
-		$arrfinishing['sizeCount'] = 0;
-		$arrfinishing['imageFileCount'] = 0;
-		$arrfinishing['otherFileCount'] = 0;
-		foreach ($fileDoc as $num => $file){
-			$arrfinishing['sizeCount']+= $file->size;
-			if($file->isImage){
-				$arrfinishing['imageFileCount']++;
-			}else{
-				$arrfinishing['otherFileCount']++;
-			}
-		}
-		$arrfinishing['sizeCount']+= 189440;
-		$arrfinishing['orgCode'] = $this->_orgCode;
 		$storageCo = App_Factory::_m('Storage');
-		$storageCo->recalculateCapacity($arrfinishing);
+		$storageDoc = $storageCo->addFilter('orgCode',$this->_orgCode)->fetchOne();
+		if(is_null($storageDoc)) {
+			$storageDoc = $storageCo->create();
+			$storageDoc = $storageCo->recalculateCapacity($fileDoc,$this->_orgCode);
+		}
 		echo "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >";
-		echo "拥有".$arrfinishing['imageFileCount']."个图片文件，".$arrfinishing['otherFileCount']."个其他文件，共用".$arrfinishing['sizeCount']."M";
+		echo "拥有".$storageDoc->imageFileCount."个图片文件，".$storageDoc->otherFileCount."个其他文件，共用".round($storageDoc->usedCapacity/1024,2)."MB";
 		exit;
 	}
 }

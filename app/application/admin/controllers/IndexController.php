@@ -14,8 +14,8 @@ class Admin_IndexController extends Zend_Controller_Action
 		$this->getResponse()->setHeader('Access-Control-Allow-Origin', '*');
 		
 		$storageCo = App_Factory::_m('Storage');
-// 		$this->view->usedCapacity = $storageCo->index($csu->getUserData('orgCode'));
-		$this->view->usedCapacity = $storageCo->index($miscFolder);
+		$storageDoc = $storageCo->addFilter('orgCode',Class_Server::getOrgCode())->fetchOne();
+		$this->view->usedCapacity = $storageDoc->getStorageInfo($miscFolder);
 	}
 	
 	
