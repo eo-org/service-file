@@ -241,7 +241,7 @@ class Rest_FileController extends Zend_Rest_Controller
 		$storageDoc = $storageCo->addFilter('orgCode',$this->_orgCode)->fetchOne();
 		if(is_null($storageDoc)) {
 			$storageDoc = $storageCo->create();
-			$storageDoc = $storageCo->recalculateCapacity($fileDoc,$this->_orgCode);
+			$storageDoc = $storageDoc->recalculateCapacity($fileDoc,$this->_orgCode);
 		}
 		echo "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >";
 		echo "拥有".$storageDoc->imageFileCount."个图片文件，".$storageDoc->otherFileCount."个其他文件，共用".round($storageDoc->usedCapacity/1024,2)."MB";
