@@ -11,9 +11,6 @@ class Rest_GroupController extends Zend_Rest_Controller
 	{
 		$orgCode = Class_Server::getOrgCode();
 		
-		$pageSize = 20;
-		$currentPage = 1;
-		
 		$co = new Class_Mongo_Group_Co();
 		$co->setFields(array('label', 'fileCount', 'orgCode'));
 		
@@ -23,20 +20,6 @@ class Rest_GroupController extends Zend_Rest_Controller
 		$queryArray = array();
 		
         $result = array();
-        foreach($this->getRequest()->getParams() as $key => $value) {
-            if(substr($key, 0 , 7) == 'filter_') {
-                $field = substr($key, 7);
-                switch($field) {
-                    case 'page':
-            			if(intval($value) != 0) {
-            				$currentPage = $value;
-            			}
-                        $result['currentPage'] = intval($value);
-            		    break;
-                }
-            }
-        }
-		$co->setPage($currentPage)->setPageSize($pageSize);
 		$data = $co->fetchAll(true);
 		$dataSize = $co->count();
 		
