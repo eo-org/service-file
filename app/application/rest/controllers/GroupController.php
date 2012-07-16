@@ -25,8 +25,6 @@ class Rest_GroupController extends Zend_Rest_Controller
 		
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
-        $result['pageSize'] = $pageSize;
-        $result['currentPage'] = $currentPage;
         
         return $this->_helper->json($result);
 	}
