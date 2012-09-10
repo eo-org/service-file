@@ -126,7 +126,7 @@ class Rest_FileController extends Zend_Rest_Controller
 				if($useOrigName) {
 					$fileDoc = App_Factory::_m('File')->addFilter('urlname', $filename)
 						->addFilter('groupId', 'system')
-						->addFilter('orgCode', $this->_orgCode)
+						->addFilter('siteId', $this->_siteId)
 						->fetchOne();
 					if(!is_null($fileDoc)) {
 						$createNewDoc = false;
@@ -155,7 +155,6 @@ class Rest_FileController extends Zend_Rest_Controller
 						$groupDoc = App_Factory::_m('Group')->find($groupId);
 						$groupDoc->fileCount++;
 						$groupDoc->save();
-						
 					}
 				} else {
 					$fileDoc->setFromArray(array(
