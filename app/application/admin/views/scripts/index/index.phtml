@@ -1,6 +1,6 @@
 <div class='user-info'>
 	Hello: <a href='#' title='user id {<?php echo $this->userId ?>} @ <?php echo $this->orgCode?>'><?php echo $this->loginName?></a>
-	容量掌控(已用空间/总空间)：<?php echo $this->usedCapacity[0]."(MB)/".$this->usedCapacity[1]."(MB)";?>
+	空间容量(已用空间/总空间)：<span title='OWNER ORG CODE: <?php echo $this->siteOrgCode?>'><?php echo $this->usedCapacity[0]."(MB)/".$this->usedCapacity[1]."(MB)";?></span>
 </div>
 <hr />
 <nav class='group-container'>
@@ -45,7 +45,7 @@
 </script>
 <script type='text/template' id='file-template'>
 <% if(isImage == true) { %>
-	<img class='clickable' src='http://storage.aliyun.com/public-misc/<?php echo $this->miscFolder?>/_thumb/{{ urlname }}' />
+	<img class='clickable' src='http://storage.aliyun.com/public-misc/<?php echo $this->siteId?>/_thumb/{{ urlname }}' />
 <% } else { %>
 	<div class='file-type-general'></div>
 <% } %>
@@ -56,7 +56,7 @@
 		<div class='upload'>上传时间:{{ uploadTime }}</div>
 		<div class='size'>大小:{{ Math.ceil(size / 1024) }} KB</div>
 		<div class='actions'>
-			<span class='open clickable'><a href='http://storage.aliyun.com/public-misc/<?php echo $this->miscFolder?>/{{ urlname }}' target='_blank'>打开</a></span>
+			<span class='open clickable'><a href='http://storage.aliyun.com/public-misc/<?php echo $this->siteId?>/{{ urlname }}' target='_blank'>打开</a></span>
 			<a class='amend' href='javascript:void(0);'>修改</a>
 			<a class='remove' href='#'>删除</a>
 		</div>

@@ -12,7 +12,7 @@ $csu = Class_Session_User::getInstance();
 	<script type="text/javascript"	src="<?=Class_Server::libUrl()?>/script/app/fileupload.js"></script>
 	
 	<script type="text/javascript">
-		window.ORG_CODE = "<?php echo Class_Server::getOrgCode() ?>";
+		window.SITE_ID = "<?php echo Class_Server::getSiteId() ?>";
 	</script>
 	
 	<title><?=$this->pageTitle ?></title>

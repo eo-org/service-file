@@ -11,7 +11,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 	protected function _initDb()
 	{
-		$mongoDb = new App_Mongo_Db_Adapter('service-file', Class_Server::getMongoServer());
+//		$mongoDb = new App_Mongo_Db_Adapter('service-file', Class_Server::getMongoServer());
+		
+		$mongoDb = new App_Mongo_Db_Adapter('service-file', '127.0.0.1');
+		
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
 
@@ -49,15 +52,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$router = $controller->getRouter();
 		
 		$defaultRoute = new Zend_Controller_Router_Route(
-			':orgCode/:module/:controller/:action/*',
+			':siteId/:module/:controller/:action/*',
 			array(
-				'module'     => 'default',
+				'module'     => 'admin',
 				'controller' => 'index',
 				'action'     => 'index'
 			),
-			array('orgCode' => '([a-z0-9]+)')
+			array('siteId' => '([a-z0-9-]+)')
 		);
 		$router->addRoute('default', $defaultRoute);
+		
+		$orgRoute = new Zend_Controller_Router_Route_Static(
+			'admin',
+			array(
+				'module' => 'admin',
+				'controller' => 'admin',
+				'action' => 'index'
+			)
+		);
+		$router->addRoute('admin', $orgRoute);
+		
 		$router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
         unset($router);
 	}

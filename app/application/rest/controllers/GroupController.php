@@ -9,13 +9,13 @@ class Rest_GroupController extends Zend_Rest_Controller
 	
 	public function indexAction()
 	{
-		$orgCode = Class_Server::getOrgCode();
+		$siteId = Class_Server::getSiteId();
 		
 		$co = new Class_Mongo_Group_Co();
-		$co->setFields(array('label', 'fileCount', 'orgCode'));
+		$co->setFields(array('label', 'fileCount', 'siteId'));
 		
 		$csu = Class_Session_User::getInstance();
-		$co->addFilter('orgCode', $orgCode);
+		$co->addFilter('siteId', $siteId);
 		
 		$queryArray = array();
 		
@@ -41,7 +41,7 @@ class Rest_GroupController extends Zend_Rest_Controller
 		
 		$csu = Class_Session_User::getInstance();
 		$groupDoc->userId = $csu->getUserId();
-		$groupDoc->orgCode = Class_Server::getOrgCode();
+		$groupDoc->siteId = Class_Server::getSiteId();
 		
 		$groupDoc->save();
 		$this->getResponse()->setHeader('result', 'sucess');

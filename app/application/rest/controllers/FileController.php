@@ -2,7 +2,7 @@
 class Rest_FileController extends Zend_Rest_Controller 
 {
 	protected $_bucket;
-	protected $_folder;
+	protected $_siteId;
 	protected $_orgCode;
 	protected $_userOrigName = false;
 	
@@ -12,7 +12,7 @@ class Rest_FileController extends Zend_Rest_Controller
 		
 		$this->_bucket = 'public-misc';
 		$this->_orgCode = Class_Server::getOrgCode();
-		$this->_folder = Class_Server::getOrgCode();
+		$this->_siteId = Class_Server::getSiteId();
 		
         $this->_helper->viewRenderer->setNoRender(true);
         $this->_helper->layout()->disableLayout();
@@ -47,7 +47,8 @@ class Rest_FileController extends Zend_Rest_Controller
         }
         
         $csu = Class_Session_User::getInstance();
-		$co->addFilter('orgCode', $this->_orgCode)->setPage($currentPage)->setPageSize($pageSize)
+		$co->addFilter('siteId', $this->_siteId)
+			->setPage($currentPage)->setPageSize($pageSize)
 			->sort('_id', -1);
 		$data = $co->fetchAll(true);
 		$dataSize = $co->count();
@@ -115,10 +116,10 @@ class Rest_FileController extends Zend_Rest_Controller
 						->resize(120, 120, Class_Image::FIT_TO_FRAME)
 						->writeImage($thumbname, 60);
 					$thumbContent = file_get_contents($thumbname);
-					$thumbResult = $service->createObject($this->_bucket, $this->_folder.'/_thumb/'.$urlname, $thumbContent);
+					$thumbResult = $service->createObject($this->_bucket, $this->_siteId.'/_thumb/'.$urlname, $thumbContent);
 					unlink($thumbname);
 				}
-				$result = $service->createObject($this->_bucket, $this->_folder.'/'.$urlname, $fileContent, $size);
+				$result = $service->createObject($this->_bucket, $this->_siteId.'/'.$urlname, $fileContent, $size);
 				
 				$createNewDoc = true;
 				
@@ -135,6 +136,7 @@ class Rest_FileController extends Zend_Rest_Controller
 				if($createNewDoc) {
 					$fileDoc = App_Factory::_m('File')->create(array(
 						'orgCode' => $this->_orgCode,
+						'siteId' => $this->_siteId,
 						'userId' => $csu->getUserId(),
 						'groupId' => $groupId,
 						'filename' => $filename,
@@ -179,24 +181,24 @@ class Rest_FileController extends Zend_Rest_Controller
 		$modelString = $this->getRequest()->getParam('model');
 		$jsonArry = Zend_Json::decode($modelString);
 		
-		$FileDoc = App_Factory::_m('File')->find($jsonArry['id']);
-		if($FileDoc->groupId != $jsonArry['groupId']){
+		$fileDoc = App_Factory::_m('File')->find($jsonArry['id']);
+		if($fileDoc->groupId != $jsonArry['groupId']){
 			$groupCo = App_Factory::_m('Group');
-			$groupDoc = $groupCo->addFilter('_id',array('$in'=>array(new MongoId($FileDoc->groupId),new MongoId($jsonArry['groupId']))))->fetchDoc();	
-			if($groupDoc[0]->getId() == $FileDoc->groupId){
-				$groupDoc[0]->fileCount = $groupDoc[0]->fileCount - 1;
-				$groupDoc[1]->fileCount = $groupDoc[1]->fileCount + 1;
-			}else{
-				$groupDoc[0]->fileCount = $groupDoc[0]->fileCount + 1;
-				$groupDoc[1]->fileCount = $groupDoc[1]->fileCount - 1;
+			
+			if($fileDoc->groupId != 'ungrouped' && $fileDoc->groupId != 'system') {
+				$fromGroupDoc = $groupCo->find($fileDoc->groupId);
+				$fromGroupDoc->fileCount = $fromGroupDoc->fileCount - 1;
+				$fromGroupDoc->save();
 			}
-			$groupDoc[0]->save();
-			$groupDoc[1]->save();
+			
+			$toGroupDoc = $groupCo->find($jsonArry['groupId']);
+			$toGroupDoc->fileCount = $toGroupDoc->fileCount + 1;
+			$toGroupDoc->save();
 		}
-		$FileDoc->setFromArray($jsonArry);
-		$FileDoc->save();
+		$fileDoc->setFromArray($jsonArry);
+		$fileDoc->save();
 		$this->getResponse()->setHeader('result', 'sucess');
-		$this->_helper->json(array('id' => $FileDoc->getId()));
+		$this->_helper->json(array('id' => $fileDoc->getId()));
 	}
 	
 	public function deleteAction()
@@ -210,9 +212,9 @@ class Rest_FileController extends Zend_Rest_Controller
 			$groupId = $fileDoc->groupId;
 			
 			$service = Class_Api_Oss_Instance::getInstance();
-			$service->removeObject($this->_bucket, $this->_folder.'/'.$objectUrl);
+			$service->removeObject($this->_bucket, $this->_siteId.'/'.$objectUrl);
 			if($fileDoc->isImage === true) {
-				$service->removeObject($this->_bucket, $this->_folder.'/_thumb/'.$objectUrl);
+				$service->removeObject($this->_bucket, $this->_siteId.'/_thumb/'.$objectUrl);
 			}
 			
 			$storageCo = App_Factory::_m('Storage');
