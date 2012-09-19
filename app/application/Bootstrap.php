@@ -60,11 +60,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$router->addRoute('default', $defaultRoute);
 		
 		$orgRoute = new Zend_Controller_Router_Route_Static(
-			'admin',
+			'info',
 			array(
-				'module' => 'admin',
-				'controller' => 'admin',
-				'action' => 'index'
+				'module' => 'default',
+				'controller' => 'index',
+				'action' => 'info'
 			)
 		);
 		$router->addRoute('admin', $orgRoute);
