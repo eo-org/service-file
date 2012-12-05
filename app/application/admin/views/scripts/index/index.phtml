@@ -45,7 +45,7 @@
 </script>
 <script type='text/template' id='file-template'>
 <% if(isImage == true) { %>
-	<img class='clickable' src='http://storage.aliyun.com/public-misc/<?php echo $this->siteId?>/_thumb/{{ urlname }}' />
+	<img class='clickable' src='http://misc.fucms.com/public-misc/<?php echo $this->siteId?>/_thumb/{{ urlname }}' />
 <% } else { %>
 	<div class='file-type-general'></div>
 <% } %>
@@ -56,7 +56,7 @@
 		<div class='upload'>上传时间:{{ uploadTime }}</div>
 		<div class='size'>大小:{{ Math.ceil(size / 1024) }} KB</div>
 		<div class='actions'>
-			<span class='open clickable'><a href='http://storage.aliyun.com/public-misc/<?php echo $this->siteId?>/{{ urlname }}' target='_blank'>打开</a></span>
+			<span class='open clickable'><a href='http://misc.fucms.com/public-misc/<?php echo $this->siteId?>/{{ urlname }}' target='_blank'>打开</a></span>
 			<a class='amend' href='javascript:void(0);'>修改</a>
 			<a class='remove' href='#'>删除</a>
 		</div>

@@ -61,7 +61,7 @@ class FileController extends Zend_Controller_Action
 		
 		$ext = strtolower(pathinfo($urlname, PATHINFO_EXTENSION));
 		
-		$url = "http://storage.aliyun.com/public-misc/".$siteId."/".$urlname;
+		$url = "http://misc.fucms.com/public-misc/".$siteId."/".$urlname;
 		file_put_contents(TMP_PATH.'/'.$urlname, file_get_contents($url));
 		
 		$filepath = TMP_PATH.'/'.$urlname;
