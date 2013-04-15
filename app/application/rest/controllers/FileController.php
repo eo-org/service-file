@@ -71,8 +71,10 @@ class Rest_FileController extends Zend_Rest_Controller
 		$service = Class_Api_Oss_Instance::getInstance();
 		
 		if($this->getRequest()->isPost()) {
+			$siteId = Class_Server::getSiteId();
+			
 			$storageCo = App_Factory::_m('Storage');
-			$storageDoc = $storageCo->addFilter('orgCode',Class_Server::getOrgCode())->fetchOne();
+			$storageDoc = $storageCo->addFilter('siteId', $siteId)->fetchOne();
 			if($storageDoc->checkCapacity()){
 				$groupId = $this->getRequest()->getParam('groupId');
 				$useOrigName = false;
