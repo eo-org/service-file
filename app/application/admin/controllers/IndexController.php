@@ -16,16 +16,13 @@ class Admin_IndexController extends Zend_Controller_Action
 		$this->getResponse()->setHeader('Access-Control-Allow-Origin', '*');
 		
 		$storageCo = App_Factory::_m('Storage');
-		$storageDoc = $storageCo->addFilter('orgCode', $orgCode)->fetchOne();
-		
-		echo $orgCode;
-		
+		$storageDoc = $storageCo->addFilter('siteId', $siteId)->fetchOne();
 		if(is_null($storageDoc)) {
 			$fileCo = App_Factory::_m('File');
-			$fileDoc = $fileCo->addFilter('orgCode', $orgCode)->fetchDoc();
+			$fileDocs = $fileCo->addFilter('siteId', $siteId)->fetchDoc();
 			$storageDoc = $storageCo->create();
-			$storageDoc = $storageDoc->recalculateCapacity($fileDoc, $orgCode);
+			$storageDoc = $storageDoc->recalculateCapacity($fileDocs, $siteId);
 		}
-		$this->view->usedCapacity = $storageDoc->getStorageInfo($orgCode);
+		$this->view->usedCapacity = $storageDoc->getStorageInfo($siteId);
 	}
 }
