@@ -31,10 +31,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		));
 		
 //		$controller->registerPlugin(new Class_Plugin_Acl());
-		$csu = Class_Session_User::getInstance();
-		$controller->registerPlugin(new App_Plugin_BackendSsoAuth(
+		$csu = Class_Session_UserV2::getInstance();
+		$controller->registerPlugin(new App_Plugin_BackendSsoAuthV2(
         	$csu,
-        	App_Plugin_BackendSsoAuth::SERVICE_FILE,
+        	App_Plugin_BackendSsoAuthV2::SERVICE_FILE,
         	Class_Server::API_KEY
         ));
 		$controller->throwExceptions(true);

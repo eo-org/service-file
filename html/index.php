@@ -1,6 +1,6 @@
 <?php
 define("BASE_PATH", getenv('BASE_PATH'));
-define("CONTAINER_PATH", BASE_PATH.'/service-file');
+define("CONTAINER_PATH", BASE_PATH.'/service-file-v2');
 define("APP_PATH", CONTAINER_PATH.'/app/application');
 
 $libPath = BASE_PATH.'/include';
