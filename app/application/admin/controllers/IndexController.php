@@ -17,6 +17,9 @@ class Admin_IndexController extends Zend_Controller_Action
 		
 		$storageCo = App_Factory::_m('Storage');
 		$storageDoc = $storageCo->addFilter('orgCode', $orgCode)->fetchOne();
+		
+		echo $orgCode;
+		
 		if(is_null($storageDoc)) {
 			$fileCo = App_Factory::_m('File');
 			$fileDoc = $fileCo->addFilter('orgCode', $orgCode)->fetchDoc();
