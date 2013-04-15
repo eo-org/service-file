@@ -218,8 +218,10 @@ class Rest_FileController extends Zend_Rest_Controller
 				$service->removeObject($this->_bucket, $this->_siteId.'/_thumb/'.$objectUrl);
 			}
 			
+			$siteId = Class_Server::getSiteId();
+		
 			$storageCo = App_Factory::_m('Storage');
-			$storageDoc = $storageCo->addFilter('orgCode',Class_Server::getOrgCode())->fetchOne();
+			$storageDoc = $storageCo->addFilter('siteId', $siteId)->fetchOne();
 			$storageDoc->removeFile($fileDoc);
 			
 			$fileDoc->delete();
@@ -240,8 +242,12 @@ class Rest_FileController extends Zend_Rest_Controller
 	{
 		$fileCo = App_Factory::_m('File');
 		$fileDoc = $fileCo->addFilter('orgCode',$this->_orgCode)->fetchDoc();
+// 		$storageCo = App_Factory::_m('Storage');
+// 		$storageDoc = $storageCo->addFilter('orgCode',$this->_orgCode)->fetchOne();
+		$siteId = Class_Server::getSiteId();
+		
 		$storageCo = App_Factory::_m('Storage');
-		$storageDoc = $storageCo->addFilter('orgCode',$this->_orgCode)->fetchOne();
+		$storageDoc = $storageCo->addFilter('siteId', $siteId)->fetchOne();
 		if(is_null($storageDoc)) {
 			$storageDoc = $storageCo->create();
 			$storageDoc = $storageDoc->recalculateCapacity($fileDoc,$this->_orgCode);
