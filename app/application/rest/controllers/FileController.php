@@ -85,9 +85,9 @@ class Rest_FileController extends Zend_Rest_Controller
 				$filename = $uploadedFile['name'];
 				$tmpName = $uploadedFile['tmp_name'];
 				$size = $uploadedFile['size'];
-				if($size > 75000000) {
+				if($size > 80000000) {
 		            $result = 'fail';
-		            $msg[] = 'file size exceeding 70MB!';
+		            $msg[] = 'file size exceeding 75MB!';
 		        }
 				$fileContent = file_get_contents($tmpName);
 				
